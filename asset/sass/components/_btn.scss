@@ -1,0 +1,13 @@
+.carousel-btn {
+    padding: 10px 20px;
+    background-color: #df461f;
+    color: white;
+    &:hover {
+        opacity: 0.6;
+    }
+    font-size: 20px;
+    transition: all 0.2s linear;
+    @include MediaQuery($md) {
+        font-size: 17px;
+    }
+}

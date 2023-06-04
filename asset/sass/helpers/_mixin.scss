@@ -1,0 +1,26 @@
+@mixin MediaQuery($type) {
+    @if $type == $xs {
+        @media screen and (max-width: $xs) {
+            @content;
+        }
+    } @else if $type == $sm {
+        @media screen and (max-width: $sm) {
+            @content;
+        }
+    } @else if $type == $md {
+        @media screen and (max-width: $md) {
+            @content;
+        }
+    } @else if $type == $lg {
+        @media screen and (max-width: $lg) {
+            @content;
+        }
+    }
+}
+
+@mixin gradient() {
+    background: linear-gradient(
+        rgba(29, 38, 113, 0.8),
+        rgba(195, 55, 100, 0.8)
+    );
+}

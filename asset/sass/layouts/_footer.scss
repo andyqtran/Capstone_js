@@ -1,0 +1,49 @@
+footer {
+@include gradient;
+
+    .footer-top {
+        .social {
+            a {
+                color: #fff;
+                margin-right: 15px;
+            }
+        }
+
+        .desc{
+            @include MediaQuery($md){
+                display: none;
+            }
+        }
+    }
+
+    hr {
+        background-color: white;
+    }
+
+    .footer-body {
+        @include MediaQuery($md) {
+            text-align: center;
+        }
+        .footer-heading {
+            font-size: 16px;
+            margin-bottom: 20px;
+            @include MediaQuery($md) {
+                margin-top: 40px;
+            }
+        }
+        .footer-desc {
+            line-height: 1.4;
+        }
+
+        li {
+            margin-top: 15px;
+            a {
+                color: white;
+            }
+        }
+    }
+
+    .footer-copyright {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+}
