@@ -1,10 +1,11 @@
-import Api from "../model/api.js";
+import Api from "../services/api.js";
 import Controller from "./controller.js";
+
 let api = new Api();
 let controller = new Controller();
-// Call Api
+
+// Call Api & renderTable
 api.callApi("capstoneJS", "GET", "").then((rs) => {
     controller.renderTable(rs.data);
 });
 
-// renderTable
