@@ -1,7 +1,10 @@
 import Api from "../model/api.js";
+import Controller from "./controller.js";
 let api = new Api();
-
+let controller = new Controller();
 // Call Api
 api.callApi("capstoneJS", "GET", "").then((rs) => {
-    console.log(rs.data);
+    controller.renderTable(rs.data);
 });
+
+// renderTable
