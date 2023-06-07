@@ -190,6 +190,10 @@ footer .footer-copyright {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.header .navbar {
+  background-color: rgba(0, 0, 0, 0);
+}
+
 #renderBody .card {
   padding: 20px 14px;
   border-radius: 10px;

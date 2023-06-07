@@ -8,3 +8,6 @@ let controller = new Controller();
 api.callApi("capstoneJS", "GET", "").then((rs) => {
     controller.renderTable(rs.data);
 });
+
+// Open navbar
+controller.openNavbar();
