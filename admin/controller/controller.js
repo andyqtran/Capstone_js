@@ -13,7 +13,7 @@ export default class Controller {
                 `<tr>
             <td>${cur.id}</td>
             <td><strong>${cur.name}</strong></td>
-            <td>${this.formatter(cur.price)} VND</td>
+            <td>$${this.formatter(cur.price)}</td>
             <td><div class="img" ><img src="${cur.img}" alt="" /></div></td>
             <td>${cur.desc}</td>
             <td><button class="btn btn-warning">Edit</button>
