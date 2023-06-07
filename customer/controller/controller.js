@@ -23,13 +23,19 @@ export default class Controller {
                                         ${cur.name}
                                     </p>
                                     <p class="price text-center">
-                                        $${this.formatter(cur.price)} <span>$${this.formatter(cur.price*1.5)}</span>
+                                        $${this.formatter(
+                                            cur.price
+                                        )} <span>$${this.formatter(
+                    cur.price * 1.5
+                )}</span>
                                     </p>
                                     <div class="brand mb-3">
                                         <span>${cur.type}</span>
                                     </div>
                                     <p class="desc">
-                                        <strong>Description: </strong>${cur.desc}
+                                        <strong>Description: </strong>${
+                                            cur.desc
+                                        }
                                     </p>
                                     <div
                                         class="rating d-flex justify-content-between"
@@ -102,5 +108,17 @@ export default class Controller {
                         </div>`
             );
         }, "");
+    }
+    openNavbar() {
+        document.onscroll = () => {
+            let scrollTop =
+                window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop < 200) {
+                this.domId("navbar").style.backgroundColor = "rgba(0, 0, 0, 0)";
+            }else{
+                this.domId("navbar").style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+            }
+        };
     }
 }
