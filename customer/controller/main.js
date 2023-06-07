@@ -11,3 +11,6 @@ api.callApi("capstoneJS", "GET", "").then((rs) => {
 
 // Open navbar
 controller.openNavbar();
+
+// Handle open and close cart
+controller.openCart();
