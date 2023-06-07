@@ -213,6 +213,11 @@ footer .footer-copyright {
   transform: translateY(10%);
   opacity: 1;
 }
+@media screen and (max-width: 576px) {
+  #renderBody .card:hover .spec {
+    padding: 20px 36px;
+  }
+}
 #renderBody .card:hover .addToCard-btn {
   transform: translate(-50%, 0%);
   opacity: 1;
