@@ -59,15 +59,20 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="../../admin/view/admin.html">
-                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                <a
+                                    class="nav-link"
+                                    href="../../admin/view/admin.html"
+                                >
+                                    <i
+                                        class="fa-solid fa-screwdriver-wrench"
+                                    ></i>
                                     <span>Admin</span>
                                 </a>
                             </li>
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="#!">
+                                <a class="nav-link" id="navToggle" href="#!">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                     <span>Cart</span>
                                 </a>
@@ -229,6 +234,81 @@
                 </p>
             </div>
         </footer>
+
+        <!-- Modal cart -->
+        <div class="navbar-collapse offcanvas-collapse">
+            <div class="cartHead">
+                <h3>Shopping Cart</h3>
+                <p>An overview of your selected products.</p>
+            </div>
+            <div class="cartBody" id="cartBody">
+                <div class="d-flex">
+                    <div class="img">
+                        <img
+                            src="https://cdn.tgdd.vn/Products/Images/42/217536/samsung-galaxy-m51-trang-new-600x600-600x600.jpg"
+                            alt=""
+                        />
+                    </div>
+                    <div class="info">
+                        <p class="name">
+                            <strong><i>iPhone 8</i></strong>
+                        </p>
+                        <p class="screen">
+                            <strong>Screen: </strong>OLED 6.1", Super Retina XDR
+                        </p>
+                        <p class="back">
+                            <strong>Back Camera: </strong>12 MP x 3
+                        </p>
+                        <p class="front">
+                            <strong>Front Camera: </strong>12 MP
+                        </p>
+                        <button class="btn btn-danger" id="cartRemoveBtn">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <p class="mr-3"><strong>Quantity: </strong></p>
+                    <div class="icon-group d-flex">
+                        <button class="bg-dark btn btn-dark" id="cartMinusBtn"
+                            ><i class="fa-solid fa-minus text-light"></i
+                        ></button>
+                        <span class="mx-3">2</span>
+                        <button class="bg-dark btn btn-dark" id="cartPlusBtn"
+                            ><i class="fa-solid fa-plus text-light"></i
+                        ></button>
+                    </div>
+                    <p class="price ml-auto mr-3"><strong>$1332</strong></p>
+                </div>
+                <hr class="mt-0" />
+            </div>
+            <div class="cartFoot">
+                <div class="d-flex justify-content-between">
+                    <p>Subtotal: </p>
+                    <p class="mr-3"><strong>$1336</strong></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p>Shipping: </p>
+                    <p class="mr-3"><strong>$10</strong></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p>Tax: </p>
+                    <p class="mr-3"><strong>$133</strong></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p>Total: </p>
+                    <p class="mr-3"><strong>$1479</strong></p>
+                </div>
+                <div class="d-flex mt-4">
+                    <button class="btn btn-dark mr-2" id="shoppingBtn">Continue Shopping</button>
+                    <button class="btn btn-danger mr-2" id="emptyBtn">Empty Cart</button>
+                    <button class="btn btn-warning ml-auto mr-3" id="payBtn">Pay now</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-overlay" id="navbar-overlay"></div>
+
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script

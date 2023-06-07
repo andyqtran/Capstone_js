@@ -81,7 +81,7 @@ table {
 .header {
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 .header .navbar {
   background-color: rgba(0, 0, 0, 0.8);
@@ -107,6 +107,63 @@ table {
   .header .navbar .nav-item .nav-link {
     margin-top: 16px;
   }
+}
+
+.offcanvas-collapse {
+  position: fixed;
+  top: 100px; /* Height of navbar */
+  bottom: 0;
+  right: -4px;
+  width: 500px;
+  transform: translateX(100%);
+  padding: 20px;
+  overflow-y: auto;
+  visibility: hidden;
+  background-color: #fff;
+  transition: all 0.3s linear;
+}
+.offcanvas-collapse .cartHead {
+  margin-bottom: 50px;
+}
+.offcanvas-collapse .cartBody .d-flex {
+  margin-bottom: 30px;
+}
+.offcanvas-collapse .cartBody .d-flex .img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+.offcanvas-collapse .cartBody .d-flex .img img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.offcanvas-collapse .cartBody .info .name {
+  font-size: 20px;
+}
+.offcanvas-collapse .cartBody .icon-group .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+/* Makes the nav visibile with the open class */
+.offcanvas-collapse.open {
+  transform: translateX(0);
+  visibility: visible;
+  z-index: 2;
+}
+
+.offcanvas-collapse.open + .navbar-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1;
 }
 
 .carousel {
