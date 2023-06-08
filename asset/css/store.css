@@ -125,15 +125,15 @@ table {
 .offcanvas-collapse .cartHead {
   margin-bottom: 50px;
 }
-.offcanvas-collapse .cartBody .d-flex {
+.offcanvas-collapse .cartBody .item-top {
   margin-bottom: 30px;
 }
-.offcanvas-collapse .cartBody .d-flex .img {
-  width: 150px;
-  height: 150px;
-  margin-right: 20px;
+.offcanvas-collapse .cartBody .item-top .img {
+  width: 120px;
+  height: 120px;
+  margin-right: 15px;
 }
-.offcanvas-collapse .cartBody .d-flex .img img {
+.offcanvas-collapse .cartBody .item-top .img img {
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -148,7 +148,10 @@ table {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  font-size: 12px;
+  padding: 5px;
 }
+
 /* Makes the nav visibile with the open class */
 .offcanvas-collapse.open {
   transform: translateX(0);
