@@ -13,6 +13,7 @@
         }
         .nav-item {
             .nav-link {
+                position: relative;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -24,6 +25,18 @@
 
                 @include MediaQuery($lg) {
                     margin-top: 16px;
+                }
+                .badge {
+                    color: black;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 16px;
+                    height: 16px;
+                    background-color: #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
         }

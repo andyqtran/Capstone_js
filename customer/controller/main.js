@@ -163,13 +163,18 @@ function clearPayment() {
     domId("total").innerHTML = "$0";
 }
 
+// Handle badge
+function handleBadge() {
+    domId("badge").innerHTML = cartList.totalQuantity();
+}
+
 // Render cart
 function renderCart(array) {
     let cartBody = domId("cartBody");
     if (array && array.length > 0) {
         let subTotal = 0;
         cartBody.innerHTML = array.reduce((acc, cur) => {
-            subTotal += cur.product.price;
+            subTotal += cur.product.price * cur.quantity;
             return (
                 acc +
                 `
@@ -203,11 +208,15 @@ function renderCart(array) {
         <div class="d-flex item-bottom">
             <p class="mr-3"><strong>Quantity: </strong></p>
             <div class="icon-group d-flex">
-                <button class="bg-dark btn btn-dark" id="cartMinusBtn">
+                <button class="bg-dark btn btn-dark" id="cartMinusBtn" onclick = "handleMinus('${
+                    cur.product.id
+                }')">
                     <i class="fa-solid fa-minus text-light"></i>
                 </button>
                 <span class="mx-3">${cur.quantity}</span>
-                <button class="bg-dark btn btn-dark" id="cartPlusBtn">
+                <button class="bg-dark btn btn-dark" id="cartPlusBtn" onclick="handlePlus('${
+                    cur.product.id
+                }')">
                     <i class="fa-solid fa-plus text-light"></i>
                 </button>
             </div>
@@ -230,6 +239,7 @@ function renderCart(array) {
         cartBody.innerHTML = "";
         clearPayment();
     }
+    handleBadge();
 }
 
 // Get local storage
@@ -253,3 +263,19 @@ domId("emptyBtn").onclick = () => {
     setLocalStorage();
     clearPayment();
 };
+
+// Handle plus button
+function handlePlus(id) {
+    cartList.quantityPlus(id);
+    renderCart(cartList.cartArray);
+    setLocalStorage();
+}
+window.handlePlus = handlePlus;
+
+// Handle minus button
+function handleMinus(id) {
+    cartList.quantityMinus(id);
+    renderCart(cartList.cartArray);
+    setLocalStorage();
+}
+window.handleMinus = handleMinus;

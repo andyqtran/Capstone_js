@@ -69,6 +69,7 @@ table {
   outline: none;
 }
 .header .navbar .nav-item .nav-link {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,6 +83,18 @@ table {
   .header .navbar .nav-item .nav-link {
     margin-top: 16px;
   }
+}
+.header .navbar .nav-item .nav-link .badge {
+  color: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 footer {
