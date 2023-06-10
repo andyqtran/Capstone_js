@@ -351,3 +351,17 @@ domId("payBtn").onclick = () => {
             });
     }
 };
+
+// Handle filter
+domId("selectList").onchange = async function () {
+    const rs = await api.callApi(`capstoneJS`, "GET", "");
+    const filtered = rs.data.filter(
+        (item) => item.type.toLowerCase() === this.value.toLowerCase()
+    );
+
+    if (filtered.length > 0) {
+        renderTable(filtered);
+    } else {
+        renderTable(rs.data);
+    }
+};
