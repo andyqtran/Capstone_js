@@ -279,3 +279,75 @@ function handleMinus(id) {
     setLocalStorage();
 }
 window.handleMinus = handleMinus;
+
+// Handle toast
+function handleToast({ title, mes, type }) {
+    let main = domId("toast");
+    if (main) {
+        const toast = document.createElement("div");
+        // auto remove toast
+        const autoRemoved = setTimeout(function () {
+            main.removeChild(toast);
+        }, 5000);
+
+        // manual remove toast
+        toast.onclick = (e) => {
+            if (e.target.closest(".toast__close")) {
+                main.removeChild(toast);
+                clearTimeout(autoRemoved);
+            }
+        };
+        const icons = {
+            success: "fa-solid fa-circle-check",
+            error: "fa-solid fa-circle-exclamation",
+        };
+        const icon = icons[type];
+
+        toast.classList.add("toast-box", `toast--${type}`);
+        toast.innerHTML = `
+                <div class="toast__icon">
+                <i class='${icon}'></i>
+            </div>
+            <div class="toast__body">
+                <h3 class="toast__title">${title}</h3>
+                <p class="toast__msg">${mes}</p>
+            </div>
+            <div class="toast__close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        `;
+        main.appendChild(toast);
+    }
+}
+function sleep(ms) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+domId("payBtn").onclick = () => {
+    if (cartList.cartArray.length === 0) {
+        handleToast({
+            title: "Thất bại!",
+            mes: "Thanh toán thất bại. Giỏ hàng trống, vui lòng kiểm tra lại giỏ hàng.",
+            type: "error",
+        });
+        setTimeout(function () {
+            domId("shoppingBtn").click();
+        }, 1500);
+    } else {
+        handleToast({
+            title: "Thành công!",
+            mes: "Thanh toán thành công",
+            type: "success",
+        });
+        sleep(1000)
+            .then(() => {
+                domId("emptyBtn").click();
+                return sleep(500);
+            })
+            .then(() => {
+                domId("shoppingBtn").click();
+            });
+    }
+};

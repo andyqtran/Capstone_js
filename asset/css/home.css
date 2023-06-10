@@ -133,4 +133,19 @@ table {
   100% {
     transform: translate(0);
   }
+}
+@keyframes slideInLeft {
+  from {
+    transform: translateX(calc(-100% - 32px));
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
 }/*# sourceMappingURL=home.css.map */
