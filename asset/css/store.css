@@ -213,14 +213,18 @@ table {
   margin-bottom: 30px;
 }
 .offcanvas-collapse .cartBody .item-top .img {
-  width: 120px;
-  height: 120px;
+  display: flex;
+  align-items: center;
   margin-right: 15px;
 }
 .offcanvas-collapse .cartBody .item-top .img img {
-  width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  width: 120px;
+}
+.offcanvas-collapse .cartBody .item-top .back {
+  display: -webkit-box;
+  -webkit-line-clamp: var(--line-clamp, 1);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .offcanvas-collapse .cartBody .info .name {
   font-size: 20px;

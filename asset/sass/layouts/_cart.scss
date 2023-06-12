@@ -16,15 +16,20 @@
     .cartBody {
         .item-top {
             .img {
-                width: 120px;
-                height: 120px;
+                display: flex;
+                align-items: center;
                 margin-right: 15px;
                 img {
-                    width: 100%;
-                    object-fit: cover;
+                    width: 120px;
                 }
             }
             margin-bottom: 30px;
+            .back {
+                display: -webkit-box;
+                -webkit-line-clamp: var(--line-clamp, 1);
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
 
         .info {
