@@ -1,35 +1,32 @@
 import Api from '../services/api.js';
-import Controller from './controller.js';
 import Product from '../model/product.js';
+import Validation from '../model/validation.js';
+import { domId, formatter } from './controller.js';
 
 /**
  * GLOBAL
- * need change controller.js
  */
 let api = new Api();
-let controller = new Controller();
-const getEle = (id) => document.getElementById(id);
-
+let validation = new Validation();
 
 /**
  * RENDER Table
- * done
  */
 const renderTable = (data) => {
-    let tableBody = controller.domId('tableBody');
-    tableBody.innerHTML = data.reduce((acc, cur) => {
+    let tableBody = domId('tableBody');
+    tableBody.innerHTML = data.reduce((content, products) => {
         return (
-            acc +
+            content +
             `<tr>
-        <td>${cur.id}</td>
-        <td><strong>${cur.name}</strong></td>
-        <td>$${controller.formatter(cur.price)}</td>
-        <td><div class='img'><img src='${cur.img}' alt='Product image' /></div></td>
-        <td>${cur.desc}</td>
+        <td>${products.id}</td>
+        <td><strong>${products.name}</strong></td>
+        <td>${formatter(products.price)}</td>
+        <td><div class='img'><img src='${products.img}' alt='Product image' /></div></td>
+        <td>${products.desc}</td>
         <td>
-        <button class='btn btn-warning' data-toggle='modal' data-target='#myModal' onclick='editProduct(${cur.id
+        <button class='btn btn-warning' data-toggle='modal' data-target='#myModal' onclick='editProduct(${products.id
             })'>Edit</button>
-        <button class='btn btn-danger' onclick='deleteProduct(${cur.id
+        <button class='btn btn-danger' onclick='deleteProduct(${products.id
             })'>Delete</button>
         </td>
         </tr>`
@@ -39,7 +36,6 @@ const renderTable = (data) => {
 
 /**
  * CALL Api and get UI
- * done
  */
 const getListProduct = () => {
     api.callApi('capstoneJS', 'GET', null)
@@ -52,17 +48,108 @@ getListProduct();
 
 /**
  * GET information from user
- * done
  */
 const getInfoProduct = () => {
-    const _name = getEle('phoneName').value;
-    const _price = getEle('price').value;
-    const _screen = getEle('screen').value;
-    const _backCamera = getEle('backCamera').value;
-    const _frontCamera = getEle('frontCamera').value;
-    const _img = getEle('imgLink').value;
-    const _desc = getEle('desc').value;
-    const _type = getEle('brand').value;
+    const _name = domId('phoneName').value;
+    const _price = domId('price').value;
+    const _screen = domId('screen').value;
+    const _backCamera = domId('backCamera').value;
+    const _frontCamera = domId('frontCamera').value;
+    const _img = domId('imgLink').value;
+    const _desc = domId('desc').value;
+    const _type = domId('brand').value;
+
+    // ================== Validation ==================
+    var isValid = true;
+    //Validation Name
+    isValid &=
+        validation.emptyCheck(_name, 'errorName', '(*) Vui lòng nhập tên sản phẩm') &&
+        validation.lengthCharacterCheck(
+            _name,
+            'errorName',
+            '(*) Vui lòng nhập 2 - 50 kí tự',
+            2,
+            50
+        );
+
+    //Validation Price
+    isValid &= validation.emptyCheck(
+        _price,
+        'errorPrice',
+        '(*) Vui lòng nhập giá tiền'
+    ) && validation.priceCheck(
+        _price,
+        'errorPrice',
+        '(*) Vui lòng nhập giá tiền trong khoảng từ 500,000 đến 1,000,000,000'
+    );
+
+    //Validation Screen
+    isValid &=
+        validation.emptyCheck(_screen, 'errorScreen', '(*) Vui lòng nhập loại thông số màn hình') &&
+        validation.lengthCharacterCheck(
+            _screen,
+            'errorScreen',
+            '(*) Vui lòng nhập 2 - 50 kí tự',
+            2,
+            50
+        );
+
+    //Validation backCamera
+    isValid &=
+        validation.emptyCheck(_backCamera, 'errorBackCamera', '(*) Vui lòng nhập thông số camera sau') &&
+        validation.lengthCharacterCheck(
+            _backCamera,
+            'errorBackCamera',
+            '(*) Vui lòng nhập 2 - 50 kí tự',
+            2,
+            50
+        );
+
+    //Validation frontCamera
+    isValid &=
+        validation.emptyCheck(_frontCamera, 'errorFrontCamera', '(*) Vui lòng nhập thông số camera trước') &&
+        validation.lengthCharacterCheck(
+            _frontCamera,
+            'errorFrontCamera',
+            '(*) Vui lòng nhập 2 - 50 kí tự',
+            2,
+            50
+        );
+
+    //Validation imgLink
+    isValid &=
+        validation.emptyCheck(_img, 'errorImgLink', '(*) Vui lòng nhập đường Link hình ảnh') &&
+        validation.paternCheck(
+            _img,
+            /^(https?:\/\/[^\s]+)/,
+            'errorImgLink',
+            '(*) Vui lòng nhập đường Link hình ảnh hợp lệ (Ví dụ: https://example.com)'
+        );
+
+    //Validation description
+    isValid &=
+        validation.emptyCheck(_desc, 'errorDesc', '(*) Vui lòng nhập phần mô tả') &&
+        validation.stringCharacterCheck(
+            _desc,
+            'errorDesc',
+            '(*) Vui lòng nhập chuỗi kí tự'
+        ) &&
+        validation.lengthCharacterCheck(
+            _desc,
+            'errorDesc',
+            '(*) Vui lòng nhập 2 - 50 kí tự',
+            2,
+            50
+        );
+
+    //Validation brand
+    isValid &= validation.brandCheck(
+        'brand',
+        'errorBrand',
+        '(*) Vui lòng chọn hãng điện thoại'
+    );
+    if (!isValid) return null;
+    // ========================================================================== //
 
     const product = new Product(
         null,
@@ -75,37 +162,38 @@ const getInfoProduct = () => {
         _desc,
         _type
     );
-
     return product;
 };
 
 /**
  * ADD product
- * done
  */
 // Design button
-getEle('btnAddPhone').onclick = function () {
-    getEle('modalLabel').innerHTML = 'Phone Management';
-    getEle('btnAddModal').style.display = 'block';
-    getEle('btnUpdateModal').style.display = 'none';
+domId('btnAddPhone').onclick = () => {
+    domId('modalLabel').innerHTML = 'Phone Management';
+    domId('btnAddModal').style.display = 'block';
+    domId('btnUpdateModal').style.display = 'none';
 };
 
-getEle('btnAddModal').onclick = () => {
-    const product = getInfoProduct();
-    // product.img = product.imgLink;
+domId('btnAddModal').onclick = (event) => {
+    event.preventDefault();
+    const product = getInfoProduct(true);
 
-    api.callApi('capstoneJS', 'POST', product)
-        .then((res) => {
-            getListProduct();
-            getEle('btnCloseModal').click();
-            alert('Bạn đã thêm sản phẩm thành công');
-        })
-        .catch((err) => { });
+    if (product) {
+        api.callApi('capstoneJS', 'POST', product)
+            .then((res) => {
+                getListProduct();
+                if (isValid) {
+                    domId('btnCloseModal').click();
+                    alert('Bạn đã thêm sản phẩm thành công');
+                }
+            })
+            .catch((err) => { });
+    }
 };
 
 /**
  * DELETE product
- * done
  */
 const deleteProduct = (id) => {
     api.callApi(`capstoneJS/${id}`, 'DELETE', null)
@@ -119,51 +207,53 @@ window.deleteProduct = deleteProduct;
 
 /**
  * EDIT product
- * done
  */
 const editProduct = (id) => {
-    getEle('modalLabel').innerHTML = 'Edit Phone Management';
-    getEle('btnAddModal').style.display = 'none';
-    getEle('btnUpdateModal').style.display = 'block';
+    domId('modalLabel').innerHTML = 'Edit Phone Management';
+    domId('btnAddModal').style.display = 'none';
+    domId('btnUpdateModal').style.display = 'block';
 
     api.callApi(`capstoneJS/${id}`, 'GET', null)
         .then((res) => {
             const product = res.data;
 
-            getEle('phoneName').value = product.name;
-            getEle('price').value = product.price;
-            getEle('screen').value = product.screen;
-            getEle('backCamera').value = product.backCamera;
-            getEle('frontCamera').value = product.frontCamera;
-            getEle('imgLink').value = product.img;
-            getEle('desc').value = product.desc;
-            getEle('brand').value = product.type;
+            domId('phoneName').value = product.name;
+            domId('price').value = product.price;
+            domId('screen').value = product.screen;
+            domId('backCamera').value = product.backCamera;
+            domId('frontCamera').value = product.frontCamera;
+            domId('imgLink').value = product.img;
+            domId('desc').value = product.desc;
+            domId('brand').value = product.type;
         })
         .catch((err) => { });
 
-    getEle('btnUpdateModal').onclick = () => updateProduct(id);
+    domId('btnUpdateModal').onclick = (event) => {
+        event.preventDefault();
+        updateProduct(id);
+    }
 };
 window.editProduct = editProduct;
 
 /**
  * UPDATE product
- * done
  */
 const updateProduct = (id) => {
     const product = getInfoProduct();
-    api
-        .callApi(`capstoneJS/${id}`, 'PUT', product)
-        .then((res) => {
-            getListProduct();
-            getEle('btnCloseModal').click();
-            alert('Bạn đã chỉnh sửa sản phẩm thành công');
-        })
-        .catch((err) => { });
+
+    if (product) {
+        api.callApi(`capstoneJS/${id}`, 'PUT', product)
+            .then((res) => {
+                getListProduct();
+                domId('btnCloseModal').click();
+                alert('Bạn đã chỉnh sửa sản phẩm thành công');
+            })
+            .catch((err) => { });
+    }
 };
 
 /**
  * FILTER name product
- * done
  */
 let productList = [];
 const getListProductSearch = () => {
@@ -174,6 +264,7 @@ const getListProductSearch = () => {
         })
         .catch((err) => { });
 };
+
 getListProductSearch();
 
 const filterProductsByName = (keyword) => {
@@ -184,34 +275,66 @@ const filterProductsByName = (keyword) => {
     return filteredProducts;
 };
 
-getEle('btnSearchName').addEventListener('click', () => {
-    const keyword = getEle('searchName').value;
+domId('btnSearchName').addEventListener('click', () => {
+    const keyword = domId('searchName').value;
+
     renderTable(filterProductsByName(keyword));
 });
 
 /**
- * SORT price product
- * done
+ * SORT product by price 
  */
-getEle('sortByPrice').addEventListener('change', () => {
-    const sortOption = getEle('sortByPrice').value;
+domId('sortByPrice').addEventListener('change', () => {
+    const sortOption = domId('sortByPrice').value;
     sortProductsByPrice(sortOption);
 });
 
 const sortProductsByPrice = (sortOption) => {
-    let sortedProducts = [];
+    let sortPriceProduct = [];
 
     switch (sortOption) {
         case 'priceLowToHigh':
-            sortedProducts = productList.sort((a, b) => a.price - b.price);
+            sortPriceProduct = productList.sort((a, b) => a.price - b.price);
             break;
         case 'priceHighToLow':
-            sortedProducts = productList.sort((a, b) => b.price - a.price);
+            sortPriceProduct = productList.sort((a, b) => b.price - a.price);
             break;
         default:
             // If no sorting option is selected, display the original product list
             renderTable(productList);
             return;
     }
+
+    renderTable(sortPriceProduct);
+};
+
+/**
+ * SORT product by brand 
+ */
+domId('sortByType').addEventListener('change', () => {
+    const sortOption = domId('sortByType').value;
+    sortProductsByBrand(sortOption);
+});
+
+const sortProductsByBrand = (sortOption) => {
+    let sortedProducts = [];
+
+    switch (sortOption) {
+        case 'brand1':
+            sortedProducts = productList.filter((product) => product.type === 'brand1');
+            break;
+        case 'brand2':
+            sortedProducts = productList.filter((product) => product.type === 'brand2');
+            break;
+        default:
+            // If no sorting option is selected, display the original product list
+            sortedProducts = productList;
+            break;
+    }
+
     renderTable(sortedProducts);
 };
+
+
+
+
