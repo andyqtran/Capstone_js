@@ -8,6 +8,8 @@ import { domId, formatter } from './controller.js';
  */
 let api = new Api();
 let validation = new Validation();
+let brandFilter = '';
+let priceFilter = '';
 
 /**
  * RENDER Table
@@ -40,7 +42,16 @@ const renderTable = (data) => {
 const getListProduct = () => {
     api.callApi('capstoneJS', 'GET', null)
         .then((res) => {
-            renderTable(res.data);
+            if (brandFilter === 'brand1' || brandFilter === 'brand2') {
+                let sortProduct = sortProductsByBrand(brandFilter, res.data);
+                renderTable(sortProduct);
+            } else if (priceFilter === 'priceLowToHigh' || priceFilter === 'priceHighToLow') {
+                let sortProduct = sortProductsByBrand(brandFilter, res.data);
+                renderTable(sortProduct);
+            }
+            else {
+                renderTable(res.data);
+            }
         })
         .catch((err) => { })
 };
@@ -150,7 +161,6 @@ const getInfoProduct = () => {
     );
     if (!isValid) return null;
     // ========================================================================== //
-
     const product = new Product(
         null,
         _name,
@@ -166,6 +176,29 @@ const getInfoProduct = () => {
 };
 
 /**
+ * RESET product input fields
+ */
+const resetModal = () => {
+    domId('phoneName').value = '';
+    domId('price').value = '';
+    domId('screen').value = '';
+    domId('backCamera').value = '';
+    domId('frontCamera').value = '';
+    domId('imgLink').value = '';
+    domId('desc').value = '';
+    domId('brand').value = '';
+
+    domId('errorName').innerHTML = '';
+    domId('errorPrice').innerHTML = '';
+    domId('errorScreen').innerHTML = '';
+    domId('errorBackCamera').innerHTML = '';
+    domId('errorFrontCamera').innerHTML = '';
+    domId('errorImgLink').innerHTML = '';
+    domId('errorDesc').innerHTML = '';
+    domId('errorBrand').innerHTML = '';
+};
+
+/**
  * ADD product
  */
 // Design button
@@ -178,15 +211,13 @@ domId('btnAddPhone').onclick = () => {
 domId('btnAddModal').onclick = (event) => {
     event.preventDefault();
     const product = getInfoProduct(true);
-
     if (product) {
         api.callApi('capstoneJS', 'POST', product)
             .then((res) => {
+                domId('btnCloseModal').click();
+                alert('Bạn đã thêm sản phẩm thành công');
+                resetModal();
                 getListProduct();
-                if (isValid) {
-                    domId('btnCloseModal').click();
-                    alert('Bạn đã thêm sản phẩm thành công');
-                }
             })
             .catch((err) => { });
     }
@@ -212,11 +243,9 @@ const editProduct = (id) => {
     domId('modalLabel').innerHTML = 'Edit Phone Management';
     domId('btnAddModal').style.display = 'none';
     domId('btnUpdateModal').style.display = 'block';
-
     api.callApi(`capstoneJS/${id}`, 'GET', null)
         .then((res) => {
             const product = res.data;
-
             domId('phoneName').value = product.name;
             domId('price').value = product.price;
             domId('screen').value = product.screen;
@@ -231,6 +260,7 @@ const editProduct = (id) => {
     domId('btnUpdateModal').onclick = (event) => {
         event.preventDefault();
         updateProduct(id);
+        resetModal();
     }
 };
 window.editProduct = editProduct;
@@ -240,13 +270,13 @@ window.editProduct = editProduct;
  */
 const updateProduct = (id) => {
     const product = getInfoProduct();
-
     if (product) {
         api.callApi(`capstoneJS/${id}`, 'PUT', product)
             .then((res) => {
                 getListProduct();
                 domId('btnCloseModal').click();
                 alert('Bạn đã chỉnh sửa sản phẩm thành công');
+                resetModal();
             })
             .catch((err) => { });
     }
@@ -256,6 +286,8 @@ const updateProduct = (id) => {
  * FILTER name product
  */
 let productList = [];
+
+// CALL Api and GET productlist
 const getListProductSearch = () => {
     api.callApi('capstoneJS', 'GET', null)
         .then((res) => {
@@ -264,20 +296,17 @@ const getListProductSearch = () => {
         })
         .catch((err) => { });
 };
-
 getListProductSearch();
 
 const filterProductsByName = (keyword) => {
     const filteredProducts = productList.filter((product) => {
         return product.name.toLowerCase().includes(keyword.toLowerCase());
     });
-
     return filteredProducts;
 };
 
 domId('btnSearchName').addEventListener('click', () => {
     const keyword = domId('searchName').value;
-
     renderTable(filterProductsByName(keyword));
 });
 
@@ -286,25 +315,27 @@ domId('btnSearchName').addEventListener('click', () => {
  */
 domId('sortByPrice').addEventListener('change', () => {
     const sortOption = domId('sortByPrice').value;
-    sortProductsByPrice(sortOption);
+    sortProductsByPrice(sortOption, productList);
 });
 
-const sortProductsByPrice = (sortOption) => {
-    let sortPriceProduct = [];
+domId('sortByPrice').onchange = () => {
+    priceFilter = domId('sortByPrice').value;
+    return priceFilter;
+};
 
+const sortProductsByPrice = (sortOption, productData) => {
+    let sortPriceProduct = [];
     switch (sortOption) {
         case 'priceLowToHigh':
-            sortPriceProduct = productList.sort((a, b) => a.price - b.price);
+            sortPriceProduct = productData.sort((a, b) => a.price - b.price);
             break;
         case 'priceHighToLow':
-            sortPriceProduct = productList.sort((a, b) => b.price - a.price);
+            sortPriceProduct = productData.sort((a, b) => b.price - a.price);
             break;
         default:
-            // If no sorting option is selected, display the original product list
-            renderTable(productList);
+            renderTable(productData);
             return;
     }
-
     renderTable(sortPriceProduct);
 };
 
@@ -313,27 +344,33 @@ const sortProductsByPrice = (sortOption) => {
  */
 domId('sortByType').addEventListener('change', () => {
     const sortOption = domId('sortByType').value;
-    sortProductsByBrand(sortOption);
+    sortProductsByBrand(sortOption, productList);
 });
 
-const sortProductsByBrand = (sortOption) => {
-    let sortedProducts = [];
+domId('sortByType').onchange = () => {
+    brandFilter = domId('sortByType').value;
+    return brandFilter;
+};
 
+const sortProductsByBrand = (sortOption, productData) => {
+    let sortedProducts = [];
     switch (sortOption) {
         case 'brand1':
-            sortedProducts = productList.filter((product) => product.type === 'brand1');
+            sortedProducts = productData.filter((product) => product.type === 'brand1');
             break;
         case 'brand2':
-            sortedProducts = productList.filter((product) => product.type === 'brand2');
+            sortedProducts = productData.filter((product) => product.type === 'brand2');
             break;
         default:
-            // If no sorting option is selected, display the original product list
-            sortedProducts = productList;
+            sortedProducts = productData;
             break;
     }
-
     renderTable(sortedProducts);
 };
+
+
+
+
 
 
 
