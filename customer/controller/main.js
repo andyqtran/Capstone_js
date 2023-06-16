@@ -178,7 +178,7 @@ function renderCart(array) {
             return (
                 acc +
                 `
-            <div class="d-flex item-top">
+            <div class="item-top">
             <div class="img">
                 <img
                     src=${cur.product.img}
