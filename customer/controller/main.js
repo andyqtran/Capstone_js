@@ -75,7 +75,11 @@ function renderTable(array) {
                 )}</span>
                                 </p>
                                 <div class="brand mb-3">
-                                    <span>${cur.type}</span>
+                                    <span>${
+                                        cur.type === "brand1"
+                                            ? "Apple"
+                                            : "Samsung"
+                                    }</span>
                                 </div>
                                 <p class="desc">
                                     <strong>Description: </strong>${cur.desc}
