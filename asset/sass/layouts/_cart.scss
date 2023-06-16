@@ -15,12 +15,12 @@
     }
     .cartBody {
         .item-top {
+            display: flex;
+            align-items: center;
             .img {
-                width: 120px;
-                height: 120px;
                 margin-right: 15px;
                 img {
-                    width: 100%;
+                    width: 120px;
                     object-fit: cover;
                 }
             }
@@ -30,6 +30,12 @@
         .info {
             .name {
                 font-size: 20px;
+            }
+            .back {
+                display: -webkit-box;
+                -webkit-line-clamp: var(--line-clamp, 1);
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
         }
         .icon-group {
